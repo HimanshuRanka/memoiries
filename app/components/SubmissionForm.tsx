@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import {useRef, useState} from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -8,12 +8,16 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Music, Image, FileText } from "lucide-react"
 import { createMemoryAction } from "../actions/memories"
-import { useToast } from "@/components/ui/use-toast"
+import { useToast } from "@/hooks/use-toast"
 
 export default function SubmissionForm() {
   const [submissionType, setSubmissionType] = useState<"song" | "photo" | "letter">("letter")
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const { toast } = useToast()
+  const toastStuff = useToast();
+  const formRef = useRef<HTMLFormElement>(null);
+
+  console.log("toaststuff",toastStuff);
+  const {toast} = toastStuff;
 
   async function handleSubmit(formData: FormData) {
     setIsSubmitting(true)
@@ -25,6 +29,7 @@ export default function SubmissionForm() {
           title: "Success",
           description: "Memory created successfully!",
         })
+        formRef.current?.reset();
       } else {
         throw new Error(result.error)
       }
@@ -41,6 +46,7 @@ export default function SubmissionForm() {
 
   return (
     <motion.form
+        ref={formRef}
       action={handleSubmit}
       className="space-y-6"
       initial={{ opacity: 0 }}

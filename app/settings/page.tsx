@@ -96,17 +96,15 @@ export default function Settings() {
           <div className="flex justify-center gap-4">
             <Button
               type="button"
-              variant={settings.receiveMemories ? "default" : "secondary"}
               onClick={() => setSettings((s) => ({ ...s, receiveMemories: true }))}
-              className="flex-1 backdrop-blur-lg bg-white bg-opacity-20 hover:bg-opacity-30 text-white"
+              className={`flex-1 text-white ${settings.receiveMemories ? "bg-opacity-55" : ""}`}
             >
               Yes
             </Button>
             <Button
               type="button"
-              variant={!settings.receiveMemories ? "default" : "secondary"}
               onClick={() => setSettings((s) => ({ ...s, receiveMemories: false }))}
-              className="flex-1 backdrop-blur-lg bg-white bg-opacity-20 hover:bg-opacity-30 text-white"
+              className={`flex-1 text-white ${!settings.receiveMemories ? "bg-opacity-55" : ""}`}
             >
               No
             </Button>
@@ -205,17 +203,15 @@ export default function Settings() {
               <div className="flex justify-center gap-4">
                 <Button
                   type="button"
-                  variant={settings.notificationTypes.includes("email") ? "default" : "secondary"}
                   onClick={() => toggleNotificationType("email")}
-                  className="flex-1 backdrop-blur-lg bg-white bg-opacity-20 hover:bg-opacity-30 text-white"
+                  className={`flex-1 text-white ${settings.notificationTypes.includes("email") ? "bg-opacity-55" : ""}`}
                 >
                   Email
                 </Button>
                 <Button
                   type="button"
-                  variant={settings.notificationTypes.includes("text") ? "default" : "secondary"}
                   onClick={() => toggleNotificationType("text")}
-                  className="flex-1 backdrop-blur-lg bg-white bg-opacity-20 hover:bg-opacity-30 text-white"
+                  className={`flex-1 text-white ${settings.notificationTypes.includes("text") ? "bg-opacity-55" : ""}`}
                 >
                   Text Message
                 </Button>
@@ -236,4 +232,3 @@ export default function Settings() {
     </Layout>
   )
 }
-
