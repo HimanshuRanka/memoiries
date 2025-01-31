@@ -3,6 +3,8 @@ import { Inter } from "next/font/google"
 import Link from "next/link"
 import { RandomBackground } from "./components/RandomBackground"
 import {Toaster} from "@/components/ui/toaster";
+import {Button} from "@/components/ui/button";
+import {FileText} from "lucide-react";
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -45,10 +47,12 @@ export default function RootLayout({
           {/*    </li>*/}
           {/*  </ul>*/}
           {/*</nav>*/}
+
           <main className="flex-grow flex items-center justify-center p-4">
             {children}
           </main>
-          <Toaster />
+
+
         </div>
       </body>
     </html>

@@ -6,7 +6,7 @@ import Image from "next/image"
 import type { Memory } from "@/types/memory"
 
 interface PolaroidProps {
-  memories: Memory[]
+  memories: Omit<Memory, "_id">[]
 }
 
 export function Polaroid({ memories }: PolaroidProps) {

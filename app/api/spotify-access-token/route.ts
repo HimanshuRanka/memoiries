@@ -9,7 +9,9 @@ export async function GET() {
             }),
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'Cache-Control': 'no-cache',
+                'Cache-Control': 'no-store',
+                'Pragma': 'no-cache',         // For older HTTP/1.0 clients (legacy support)
+                'Expires': '0',               // Ensures response is considered expired immediately
                 'Authorization': 'Basic ' + (Buffer.from(process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET).toString('base64')),
             },
         });

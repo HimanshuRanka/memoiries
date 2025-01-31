@@ -6,7 +6,7 @@ import type { Memory } from "@/types/memory"
 import {useEffect, useState} from "react"
 
 interface VinylProps {
-  memory: Memory
+  memory: Omit<Memory, "_id">
 }
 
 export function Vinyl({ memory }: VinylProps) {
@@ -38,19 +38,20 @@ export function Vinyl({ memory }: VinylProps) {
         })
       }
       const data = await response.json()
-      setAlbumCover(data.album.images[0].url)
+      setAlbumCover(data.album.images[0].url ?? '')
     }
 
-
-
-    fetchAlbumCover()
+    if(memory.content.includes("spotify")) {
+      fetchAlbumCover()
+    } else {
+        setAlbumCover("");
+    }
   }, [memory.content])
 
   const handlePlayClick = () => {
     setIsPlaying(!isPlaying)
   }
 
-  console.log(isPlaying, "is playing");
 
   return (
     <motion.div
@@ -96,21 +97,13 @@ export function Vinyl({ memory }: VinylProps) {
         </div>
 
         {/* Digital Display */}
-        <div className="backdrop-blur-lg bg-white bg-opacity-20 border border-white border-opacity-20 rounded-lg p-4 space-y-2">
+        <div className="backdrop-blur-lg bg-white bg-opacity-20 border border-white border-opacity-20 rounded-lg p-4 space-y-2 flex flex-col">
           <p className="text-white text-center">{memory.note}</p>
           <p className="text-white text-opacity-70 text-center text-sm">Shared by {memory.senderName}</p>
+          <a className={"mt-4 text-white w-full text-center p-2 border border-white rounded backdrop-blur-lg"} rel={"noreferrer noopener"} target={"_blank"} href={memory.content}>Go to Song</a>
         </div>
       </div>
-      {isPlaying && (
-          <iframe
-              src={`https://open.spotify.com/embed/track/${memory.content.split("/").pop()?.split("?")[0]}`}
-              width="300"
-              height="80"
-              allow="encrypted-media"
-              className="hidden"
-              title={"Spotify Embed"}
-          ></iframe>
-      )}
+
 
     </motion.div>
   )

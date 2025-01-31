@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast"
 export default function SubmissionForm() {
   const [submissionType, setSubmissionType] = useState<"song" | "photo" | "letter">("letter")
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true)
   const toastStuff = useToast();
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -106,6 +107,7 @@ export default function SubmissionForm() {
           <Input
             id="content"
             name="content"
+            required={submissionType === "song"}
             placeholder="Enter song URL"
             className="bg-white bg-opacity-20 text-white placeholder-white placeholder-opacity-50"
           />
@@ -121,6 +123,7 @@ export default function SubmissionForm() {
             id="content"
             name="content"
             type="file"
+            required={submissionType === "photo"}
             accept="image/*"
             className="bg-white bg-opacity-20 text-white file:text-white file:bg-transparent placeholder-white placeholder-opacity-50"
           />
@@ -134,6 +137,7 @@ export default function SubmissionForm() {
         <Textarea
           id="note"
           name="note"
+          required={submissionType === "letter"}
           placeholder={submissionType === "letter" ? "Write your letter here" : "Enter your note here"}
           className="bg-white bg-opacity-20 text-white placeholder-white placeholder-opacity-50"
           rows={submissionType === "letter" ? 6 : 3}

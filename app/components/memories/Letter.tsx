@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 import type { Memory } from "@/types/memory"
 
 interface LetterProps {
-  memory: Memory
+  memory: Omit<Memory, "_id">;
 }
 
 export function Letter({ memory }: LetterProps) {
