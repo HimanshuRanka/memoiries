@@ -8,10 +8,6 @@ body {
 }
 
 @layer utilities {
-  .backdrop-blur-md {
-    backdrop-filter: blur(12px);
-  }
-
   .text-balance {
      text-wrap: balance;
    }

@@ -14,11 +14,12 @@ export async function GET() {
                 'Expires': '0',               // Ensures response is considered expired immediately
                 'Authorization': 'Basic ' + (Buffer.from(process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET).toString('base64')),
             },
+            cache: 'no-store'
         });
 
         const access_token = await response.json();
 
-        return NextResponse.json({ success: true, access_token: access_token.access_token});
+        return NextResponse.json({ success: true, access_token: access_token.access_token, last_fetched_at: new Date().toISOString()});
     } catch (error) {
         console.error("Failed to set new memory:", error)
         return NextResponse.json({ success: false, error: "Failed to get an access token" }, { status: 500 })

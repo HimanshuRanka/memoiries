@@ -45,7 +45,6 @@ export async function getMemories() {
 export async function createMemory(memory: Omit<Memory, "_id" | "createdAt">) {
     const client = await clientPromise
     const db = client.db()
-    console.log("Creating memory with data:", memory);
     const newMemoryId = new ObjectId();
     if (bucket && memory.type === "photo" && memory.image) {
         const readableStream = new Readable();
@@ -62,7 +61,7 @@ export async function createMemory(memory: Omit<Memory, "_id" | "createdAt">) {
         createdAt: new Date(),
         _id: newMemoryId
     })
-    console.log("Memory created with ID:", result.insertedId, result);
+    console.log("Memory created with ID:", result.insertedId);
     return {...memory, _id: result.insertedId, createdAt: new Date()}
 }
 

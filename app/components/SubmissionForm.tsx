@@ -17,7 +17,6 @@ export default function SubmissionForm() {
   const toastStuff = useToast();
   const formRef = useRef<HTMLFormElement>(null);
 
-  console.log("toaststuff",toastStuff);
   const {toast} = toastStuff;
 
   async function handleSubmit(formData: FormData) {

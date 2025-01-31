@@ -52,7 +52,7 @@ export function MoodSelector({ onMoodSelect }: MoodSelectorProps) {
             key={mood.name}
             onClick={() => toggleMood(mood)}
             className={`
-              text-white backdrop-blur-md transition-all duration-200 ease-in-out
+              text-white transition-all duration-200 ease-in-out
               ${selectedMoods.some((m) => m.name === mood.name) ? "ring-2 ring-white scale-105" : "hover:scale-105"}
             `}
             style={{

@@ -14,7 +14,7 @@ export default function Layout({ children }: LayoutProps) {
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="backdrop-blur-lg bg-white bg-opacity-20 rounded-xl shadow-lg p-6">{children}</div>
+      <div className="bg-white bg-opacity-20 rounded-xl shadow-lg p-6">{children}</div>
     </motion.div>
   )
 }

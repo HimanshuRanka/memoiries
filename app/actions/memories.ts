@@ -35,7 +35,6 @@ export async function createMemoryAction(formData: FormData) {
 export async function getCurrentMemory() {
   try {
     const memoryDetails = await getCurrentRecord();
-    console.log("Memory details:", memoryDetails)
     return memoryDetails;
   } catch (error) {
     console.error("Failed to fetch current memory:", error)

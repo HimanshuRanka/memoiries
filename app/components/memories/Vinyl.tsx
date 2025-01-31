@@ -16,7 +16,14 @@ export function Vinyl({ memory }: VinylProps) {
   useEffect(() => {
     const fetchAlbumCover = async () => {
       const trackId = memory.content.split("/").pop()?.split("?")[0]
-       let accessToken = await fetch('/api/spotify-access-token')
+       let accessToken = await fetch('/api/spotify-access-token', {
+         headers: {
+           'Cache-Control': 'no-store',
+           'Pragma': 'no-cache',         // For older HTTP/1.0 clients (legacy support)
+           'Expires': '0',               // Ensures response is considered expired immediately
+         },
+         cache: 'no-store'
+       })
           .then(res => res.json())
           .then(data => data.access_token)
       let response = await fetch(`https://api.spotify.com/v1/tracks/${trackId}`, {
@@ -74,7 +81,7 @@ export function Vinyl({ memory }: VinylProps) {
                 <div className="absolute inset-8 rounded-full border border-gray-700" />
                 <div className="absolute inset-[4rem] rounded-full bg-gray-800 flex items-center justify-center">
                   <div
-                    className="p-8 rounded-full bg-white bg-opacity-10 backdrop-blur-lg hover:bg-opacity-20 transition-colors"
+                    className="p-8 rounded-full bg-white bg-opacity-10 hover:bg-opacity-20 transition-colors"
                     aria-label="Play song"
                     style={{ backgroundImage: `url(${albumCover})`, backgroundSize: 'cover' }}
                   >
@@ -97,10 +104,10 @@ export function Vinyl({ memory }: VinylProps) {
         </div>
 
         {/* Digital Display */}
-        <div className="backdrop-blur-lg bg-white bg-opacity-20 border border-white border-opacity-20 rounded-lg p-4 space-y-2 flex flex-col">
+        <div className="bg-white bg-opacity-20 border border-white border-opacity-20 rounded-lg p-4 space-y-2 flex flex-col">
           <p className="text-white text-center">{memory.note}</p>
           <p className="text-white text-opacity-70 text-center text-sm">Shared by {memory.senderName}</p>
-          <a className={"mt-4 text-white w-full text-center p-2 border border-white rounded backdrop-blur-lg"} rel={"noreferrer noopener"} target={"_blank"} href={memory.content}>Go to Song</a>
+          <a className={"mt-4 text-white w-full text-center p-2 border border-white rounded"} rel={"noreferrer noopener"} target={"_blank"} href={memory.content}>Go to Song</a>
         </div>
       </div>
 

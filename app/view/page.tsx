@@ -27,16 +27,19 @@ function blendColors(colors: string[]): string {
 
 export default function View() {
   const [showMemory, setShowMemory] = useState(false)
+  const [checkingAffirmationStatus, setCheckingAffirmationStatus] = useState(true)
   const [affirmationCompleted, setAffirmationCompleted] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
+    if(!checkingAffirmationStatus) setCheckingAffirmationStatus(true)
     const checkAffirmationStatus = async () => {
       const currentRecord = await getCurrentMemory()
       if (currentRecord) {
         setAffirmationCompleted(currentRecord.dailyRecordData.affirmationCompleted)
         setShowMemory(currentRecord.dailyRecordData.affirmationCompleted)
       }
+      setCheckingAffirmationStatus(false);
     }
     checkAffirmationStatus()
   }, [])
@@ -63,19 +66,19 @@ export default function View() {
   return (
     <Layout>
       <div className="w-full max-w-4xl mx-auto px-4">
-        {!affirmationCompleted ? (
-          <AffirmationStep onComplete={handleAffirmationComplete} />
+        {checkingAffirmationStatus ? <div className="text-center text-white">Loading memory...</div> : !affirmationCompleted ? (
+            <AffirmationStep onComplete={handleAffirmationComplete}/>
         ) : (
-          <Suspense fallback={<div className="text-center text-white">Loading memory...</div>}>
-            <MemoryView onViewAnother={handleViewAnotherMemory} />
-          </Suspense>
+            <Suspense fallback={<div className="text-center text-white">Loading memory...</div>}>
+              <MemoryView onViewAnother={handleViewAnotherMemory}/>
+            </Suspense>
         )}
       </div>
     </Layout>
   )
 }
 
-function MemoryView({ onViewAnother }: { onViewAnother: () => void }) {
+function MemoryView({onViewAnother }: { onViewAnother: () => void }) {
   const [memory, setMemory] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [moodLogged, setMoodLogged] = useState(false)
@@ -84,11 +87,11 @@ function MemoryView({ onViewAnother }: { onViewAnother: () => void }) {
   useEffect(() => {
     getCurrentMemory().then((mem) => {
       setMemory(mem?.memory)
-      setIsLoading(false)
       if (mem && mem.dailyRecordData.moods && mem.dailyRecordData.moods.length > 0) {
         setMoodLogged(true)
         setMoodBar(blendColors(mem.dailyRecordData.moods.map((mood) => moods.find(m => m.name == mood)?.color ?? "rgba(255, 255, 255, 0.5)")))
       }
+      setIsLoading(false)
     })
   }, [])
 
@@ -121,7 +124,7 @@ function MemoryView({ onViewAnother }: { onViewAnother: () => void }) {
         </div>
       ) : (
         <div className="mt-8 space-y-4">
-          <div className="h-16 rounded-full backdrop-blur-md" style={{ backgroundColor: moodBar || undefined }}></div>
+          <div className="h-16 rounded-full" style={{ backgroundColor: moodBar || undefined }}></div>
           <p className="text-center text-white">Your mood has been logged for today.</p>
         </div>
       )}
