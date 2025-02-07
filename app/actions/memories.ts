@@ -22,8 +22,7 @@ export async function createMemoryAction(formData: FormData) {
   }
 
   try {
-    const newMemory = await createMemory(memory)
-    await setNewMemory(newMemory._id.toString())
+    await createMemory(memory)
     revalidatePath("/view")
     return { success: true }
   } catch (error) {

@@ -24,7 +24,7 @@ export interface Settings {
 }
 
 export interface DailyRecord {
-  date: string
+  date: Date
   memoryId: string
   affirmationCompleted: boolean
   moods: string[]

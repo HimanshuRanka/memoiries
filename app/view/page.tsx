@@ -59,6 +59,7 @@ export default function View() {
       body: JSON.stringify({ memoryId: "random" }),
     })
     if (response.ok) {
+      console.log("set new memory");
       router.refresh()
     }
   }

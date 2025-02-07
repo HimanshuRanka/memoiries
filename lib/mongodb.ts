@@ -65,21 +65,23 @@ export async function createMemory(memory: Omit<Memory, "_id" | "createdAt">) {
     return {...memory, _id: result.insertedId, createdAt: new Date()}
 }
 
-export async function getImage(filename: string) {
-    return bucket.openDownloadStreamByName(filename);
+async function getRandomMemory() {
+    const client = await clientPromise
+    const db = client.db()
+    return db.collection<Memory>("memory").aggregate([{$sample: {size: 1}}]).next()
 }
 
 export async function getCurrentRecord() {
     const client = await clientPromise
     const db = client.db()
-    const today = new Date().toISOString().split("T")[0]
-    let record = await db.collection<DailyRecord>("current_memory").findOne({date: today})
+    const today = new Date()
+    today.setHours(0, 0, 0, 0);
+    let record = await db.collection<DailyRecord>("current_memory").findOne({date: {$gte: today}})
+
+    console.log("Record", record);
 
     if (!record) {
-        const randomMemory = await db
-            .collection<Memory>("memory")
-            .aggregate([{$sample: {size: 1}}])
-            .next()
+        const randomMemory = await getRandomMemory();
         record = {
             date: today,
             memoryId: randomMemory?._id.toString() || "",
@@ -107,17 +109,19 @@ export async function getCurrentRecord() {
     return {dailyRecordData: record, memory: memory}
 }
 
-export async function setNewMemory(memoryId: string) {
+export async function setNewMemory() {
     const client = await clientPromise
     const db = client.db()
-    const today = new Date().toISOString().split("T")[0]
-    await db.collection<DailyRecord>("current_memory").updateOne({date: today}, {$set: {memoryId}}, {upsert: true})
+    const today = new Date()
+    const randomMemory = await getRandomMemory();
+    const newMemoryId = randomMemory?._id.toString() || ""
+    await db.collection<DailyRecord>("current_memory").updateOne({date: today}, {$set: {newMemoryId}}, {upsert: true})
 }
 
 export async function completeAffirmation() {
     const client = await clientPromise
     const db = client.db()
-    const today = new Date().toISOString().split("T")[0]
+    const today = new Date()
     await db
         .collection<DailyRecord>("current_memory")
         .updateOne({date: today}, {$set: {affirmationCompleted: true}}, {upsert: true})
@@ -126,7 +130,7 @@ export async function completeAffirmation() {
 export async function saveMood(moods: string[]) {
     const client = await clientPromise
     const db = client.db()
-    const today = new Date().toISOString().split("T")[0]
+    const today = new Date()
     await db.collection<DailyRecord>("current_memory").updateOne({date: today}, {$set: {moods}}, {upsert: true})
 }
 
