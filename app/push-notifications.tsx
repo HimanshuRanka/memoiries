@@ -74,7 +74,7 @@ export default function EnableNotifsButton() {
     }
 
     return (
-        <Button type={"button"} className={"w-full"} onClick={handleEnableNotifs}>
+        <Button type={"button"} className={"w-full mt-2"} onClick={handleEnableNotifs}>
             Enable Notifications
         </Button>
     )

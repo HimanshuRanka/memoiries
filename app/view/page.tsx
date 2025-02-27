@@ -64,6 +64,8 @@ export default function View() {
     }
   }
 
+
+
   return (
     <Layout>
       <div className="w-full max-w-4xl mx-auto px-4">
@@ -71,7 +73,7 @@ export default function View() {
             <AffirmationStep onComplete={handleAffirmationComplete}/>
         ) : (
             <Suspense fallback={<div className="text-center text-white">Loading memory...</div>}>
-              <MemoryView onViewAnother={handleViewAnotherMemory}/>
+              <MemoryView/>
             </Suspense>
         )}
       </div>
@@ -79,7 +81,7 @@ export default function View() {
   )
 }
 
-function MemoryView({onViewAnother }: { onViewAnother: () => void }) {
+function MemoryView() {
   const [memory, setMemory] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [moodLogged, setMoodLogged] = useState(false)
@@ -129,9 +131,6 @@ function MemoryView({onViewAnother }: { onViewAnother: () => void }) {
           <p className="text-center text-white">Your mood has been logged for today.</p>
         </div>
       )}
-      <div className="mt-8 flex justify-center">
-        <Button onClick={onViewAnother}>View Another Memory</Button>
-      </div>
     </>
   )
 }
