@@ -113,6 +113,7 @@ export async function setNewMemory() {
     const client = await clientPromise
     const db = client.db()
     const today = new Date()
+    today.setHours(0, 0, 0, 0);
     const randomMemory = await getRandomMemory();
     const newMemoryId = randomMemory?._id.toString() || ""
     await db.collection<DailyRecord>("current_memory").updateOne({date: today}, {$set: {newMemoryId}}, {upsert: true})
@@ -122,6 +123,7 @@ export async function completeAffirmation() {
     const client = await clientPromise
     const db = client.db()
     const today = new Date()
+    today.setHours(0, 0, 0, 0);
     await db
         .collection<DailyRecord>("current_memory")
         .updateOne({date: today}, {$set: {affirmationCompleted: true}}, {upsert: true})
@@ -131,6 +133,7 @@ export async function saveMood(moods: string[]) {
     const client = await clientPromise
     const db = client.db()
     const today = new Date()
+    today.setHours(0, 0, 0, 0);
     await db.collection<DailyRecord>("current_memory").updateOne({date: today}, {$set: {moods}}, {upsert: true})
 }
 
