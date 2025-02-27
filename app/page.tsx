@@ -2,6 +2,7 @@ import Layout from "./components/Layout"
 import SubmissionForm from "./components/SubmissionForm"
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
+import EnableNotifsButton from "@/app/push-notifications";
 
 export default function Home() {
     return (
@@ -17,6 +18,7 @@ export default function Home() {
                 >
                     About
                 </Button>
+                <EnableNotifsButton />
             </Link>
         </Layout>
     )

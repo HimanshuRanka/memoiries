@@ -1,7 +1,7 @@
 import {GridFSBucket, MongoClient, ObjectId} from "mongodb"
 import type {DailyRecord, Memory, Settings} from "@/types/memory"
-import fs from "fs"
 import {Readable} from "node:stream";
+import {PushSubscription} from "web-push";
 
 if (!process.env.MONGODB_URI) {
     throw new Error('Invalid/Missing environment variable: "MONGODB_URI"')
@@ -150,4 +150,16 @@ export async function getSettings() {
     const client = await clientPromise
     const db = client.db()
     return db.collection<Settings>("settings").findOne({})
+}
+
+export async function setSubscriptionDetails(subscriptionDetails: PushSubscription) {
+    const client = await clientPromise
+    const db = client.db()
+    return await db.collection<PushSubscription>("notification-subscription").updateOne({}, {$set: subscriptionDetails}, {upsert: true})
+}
+
+export async function getSubscriptionDetails() {
+    const client = await clientPromise
+    const db = client.db()
+    return db.collection<PushSubscription>("notification-subscription").findOne({})
 }
